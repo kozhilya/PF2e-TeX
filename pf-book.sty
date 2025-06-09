@@ -116,6 +116,11 @@
 \settoggle{multitoc}{true}
 \DeclareOptionX{nomultitoc}{\togglefalse{multitoc}}
 
+% Draw toc on side of pages
+\newtoggle{side-toc}
+\settoggle{side-toc}{false}
+\DeclareOptionX{side-toc}{\toggletrue{side-toc}}
+
 % Default Settings
 \ExecuteOptionsX{bg=full}
 \ProcessOptionsX\relax
@@ -134,7 +139,6 @@
 \RequirePackage{book/pf-box}
 \RequirePackage{book/pf-colors}
 \RequirePackage{book/pf-fonts}     % font definitions
-\RequirePackage{book/pf-pagestyle}    % page style
 \RequirePackage{book/pf-list}
 \RequirePackage{book/pf-creature}
 \RequirePackage{book/pf-sections}
@@ -149,6 +153,15 @@
 \RequirePackage{book/pf-character}
 \RequirePackage{book/pf-items}
 \RequirePackage{book/pf-license}
+
+% Toggle page style
+
+\iftoggle{side-toc}{%
+  \RequirePackage{book/pf-pagestyle-side-toc}
+}{
+  \RequirePackage{book/pf-pagestyle}
+}
+
 
 % Set paragraph and line spacing
 %\linespread{1.1}%
