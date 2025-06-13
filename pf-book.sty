@@ -5,7 +5,7 @@
 %
 
 % Set a different geometry with \newgeometry
-\usepackage[
+\RequirePackage[
   % bindingoffset=15pt, % .2in
   % hmargin=50pt,       % .7in
   top=40pt,           % .55in
@@ -15,7 +15,7 @@
 ]{geometry}
 
 % stop hyphenation
-\usepackage[none]{hyphenat}
+\RequirePackage[none]{hyphenat}
 
 % Loaded before tikz to avoid package option conflict with pgf.
 \RequirePackage[table]{xcolor}
@@ -48,14 +48,14 @@
 % Generally used things
 %
 
-\usepackage[english]{babel}
-% \usepackage[utf8]{inputenc}
-\usepackage{tabu}
-\usepackage[colaction]{multicol}
+\RequirePackage[english]{babel}
+% \RequirePackage[utf8]{inputenc}
+\RequirePackage{tabu}
+\RequirePackage[colaction]{multicol}
 
 % probably going to remove this eventually...
-\usepackage{longtable,booktabs}
-\usepackage{csquotes}
+\RequirePackage{longtable,booktabs}
+\RequirePackage{csquotes}
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
