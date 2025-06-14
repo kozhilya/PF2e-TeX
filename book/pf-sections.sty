@@ -3,6 +3,7 @@
 \RequirePackage{amssymb}
 \RequirePackage{everypage}
 \RequirePackage{float}    % To force placement
+\RequirePackage{etoolbox}
 
 \iftoggle{multitoc}{%
   \RequirePackage[toc]{multitoc}
@@ -64,10 +65,23 @@
   textBodyHeight=textBodyHeight  
 ]{
   \begin{figure*}[h]
-    \vspace*{-1.5cm}
-    \hspace*{-1.5cm}
-    \makebox[\paperwidth][c]{
-      \includegraphics[width=\paperwidth,height=15cm,keepaspectratio]{\commandkey{image}}
+    \iftoggle{side-toc}{
+      \ifnumodd{\thepage}{
+        \vspace*{-0.8cm}
+        \hspace*{-2.2cm}
+        \def\splashWidth{\paperwidth-\sidetocwidth}
+      }{
+        \vspace*{-0.8cm}
+        \hspace*{-1.5cm}
+        \def\splashWidth{\paperwidth-2.7cm}
+      }
+    }{
+      \vspace*{-1.5cm}
+      \hspace*{-1.5cm}
+      \def\splashWidth{\paperwidth}
+    }
+    \makebox[\splashWidth][c]{
+      \includegraphics[width=\splashWidth,height=15cm,keepaspectratio]{\commandkey{image}}
     }
   \end{figure*}
 
