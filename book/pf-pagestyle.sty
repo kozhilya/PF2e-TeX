@@ -19,6 +19,12 @@
 \renewcommand{\headrulewidth}{0.0pt} %no rule for header
 \renewcommand{\footrulewidth}{0.0pt} %no rule for footer
 
+% New chapter style that don't have number but included in toc and side-toc
+\newcommand{\schapter}[1]{%
+  \chapter*{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+}
+
 \fancyhf{} % clear all headers and footers
 
 \fancyhead[O]{
