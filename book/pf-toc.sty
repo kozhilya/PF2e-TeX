@@ -38,25 +38,31 @@
 
 \strcompare{\pf@tocStyle}{mixed}{%
   \typeout{tocStyle = mixed}%
-  \RequirePackage[toc]{multitoc}
-  \renewcommand{\multicolumntoc}{2}
   
-\makeatletter
-  \pretocmd{\l@chapter}{\end{multicols}}{}{}
-  \apptocmd{\l@chapter}{\begin{multicols}{\multicolumntoc}}{}{}
-\makeatother
+  % I couldn't figure it out myself.
+  % OpenAI and Deppseek either.
+  % Stack Overflow did.
+  % We are still alive!!!
+  % https://tex.stackexchange.com/questions/746229/mixing-columns-count-in-table-of-contents
 
-  % \titlecontents{chapter} % section
-  %   [1.8em] % left
-  %   {\onecolumn} % above-code
-  %   {\contentslabel{1.3em}} % numbered-entry-format
-  %   {\hspace*{-1.3em}} % numberless-entry-format
-  %   {\titlerule*[1pc]{.}\contentspage} % filler-page-format
-  %   [\twocolumn] % below-code
-  % \renewcommand{\tableofcontents}{%
-  %   \chapter*{\contentsname}%
-  %   \twocolumn%
-  %   \@starttoc{toc}%
-  %   \onecolumn%
-  % }%
+  \RequirePackage{etoc}
+
+  \setcounter{tocdepth}{1} % Parts, chapters and sections
+
+  \renewcommand*\l@chapter{\@dottedtocline{0}{1.5em}{2.3em}}
+  \renewcommand*\l@section{\@dottedtocline{1}{0em}{0em}}
+
+  \etocsetstyle{chapter}
+    {}
+    {}
+    {\l@chapter{\numberline{\chaptertitlename \etocnumber}\etocname}{\etocpage}}
+    {}
+  \etocsetstyle{section}
+    {\begin{multicols}{2}}
+    {}
+    {\l@section{\numberline{\etocnumber}\etocname}{\etocpage}}
+    {\end{multicols}}
 }{}
+
+%{\@dottedtocline{2}{1.5em}{2.3em}{\etocifnumbered{\numberline{etocnumber}}{}%
+%\etocname}{\etocpage}}
