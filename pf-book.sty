@@ -4,16 +4,6 @@
 % Prerequisite Packages
 %
 
-% Set a different geometry with \newgeometry
-\RequirePackage[
-  % bindingoffset=15pt, % .2in
-  % hmargin=50pt,       % .7in
-  top=40pt,           % .55in
-  bottom=50pt,        % .7in
-  footskip=30pt,      % makes the footer text line up with the graphic
-  % scale=0.90,
-]{geometry}
-
 % stop hyphenation
 \RequirePackage[none]{hyphenat}
 
@@ -111,6 +101,15 @@
 \newtoggle{justified}
 \DeclareOptionX{justified}{\toggletrue{justified}}
 
+% Table of contents
+\DeclareOptionX{toc}[onecolumn]{%
+  \XKV@cc*+[\val\index]{#1}{onecolumn,twocolumn,mixed}{%
+    \def\pf@tocStyle{#1}%
+  }{%
+    \PackageWarning{pf}{\val\ is not a valid choice for bg and was ignored}%
+  }%
+}
+
 % Toggle multitoc.
 \newtoggle{multitoc}
 \settoggle{multitoc}{true}
@@ -123,6 +122,7 @@
 
 % Default Settings
 \ExecuteOptionsX{bg=full}
+\ExecuteOptionsX{toc=onecolumn}
 \ProcessOptionsX\relax
 
 % Stuff every module should be able to use
@@ -131,6 +131,26 @@
 \noindent\hangindent=1ex\textbf{#1}~#2
 % keep the newline
 }
+
+% Page geometry
+\iftoggle{side-toc}{%
+  \RequirePackage[
+    top=3cm,
+    left=2cm,   % inner edge
+    right=4cm,  % outer edge
+    twoside,
+  ]{geometry}
+}{
+  \RequirePackage[
+    % bindingoffset=15pt, % .2in
+    % hmargin=50pt,       % .7in
+    top=40pt,           % .55in
+    bottom=50pt,        % .7in
+    footskip=30pt,      % makes the footer text line up with the graphic
+    % scale=0.90,
+  ]{geometry}
+}
+
 
 %% I have now made this functionality part of my currfile package. It is provided as a sub-package currfile-abspath, which can also be used on its own. It provides \getmainfile, \getabspath{<file>} and \getpwd which set \themainfile, \theabspath and \thepwd to the main file name (which might be different from \jobname.tex), the absolute path of the given file and the parent working directory of the compiler run.
 
@@ -161,6 +181,7 @@
 }{
   \RequirePackage{book/pf-pagestyle}
 }
+  \RequirePackage{book/pf-toc}
 
 
 % Set paragraph and line spacing

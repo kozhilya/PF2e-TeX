@@ -1,0 +1,62 @@
+\RequirePackage{titletoc}
+\RequirePackage{etoolbox}
+
+% TOC types:
+%   - onecolumn - Chapters and sections in 1 column.
+%   - twocolumn - Chapters and sections in common 2 columns enviroment.
+%   - mixed - Chapters in wide, sections of same shpater in 2 columns.
+
+\typeout{tocStyle value = \pf@tocStyle}
+% Explain \strcompare to TeX
+\ExplSyntaxOn
+\cs_new_eq:NN \strcompare \str_if_eq:eeTF
+\ExplSyntaxOff
+
+% One column TOC
+\strcompare{\pf@tocStyle}{onecolumn}{%
+  \typeout{tocStyle = onecolumn}
+
+  \renewcommand{\tableofcontents}{%
+    \chapter*{\contentsname}
+    \@starttoc{toc}
+  }
+}{}
+
+% Two column TOC
+\strcompare{\pf@tocStyle}{twocolumn}{%
+  \typeout{tocStyle = twocolumn}
+
+  \renewcommand{\tableofcontents}{%
+    \chapter*{\contentsname}
+    \begin{multicols}{2}
+      \@starttoc{toc}
+    \end{multicols}
+  }
+}{}
+
+% Mixed column TOC
+
+\strcompare{\pf@tocStyle}{mixed}{%
+  \typeout{tocStyle = mixed}%
+  \RequirePackage[toc]{multitoc}
+  \renewcommand{\multicolumntoc}{2}
+  
+\makeatletter
+  \pretocmd{\l@chapter}{\end{multicols}}{}{}
+  \apptocmd{\l@chapter}{\begin{multicols}{\multicolumntoc}}{}{}
+\makeatother
+
+  % \titlecontents{chapter} % section
+  %   [1.8em] % left
+  %   {\onecolumn} % above-code
+  %   {\contentslabel{1.3em}} % numbered-entry-format
+  %   {\hspace*{-1.3em}} % numberless-entry-format
+  %   {\titlerule*[1pc]{.}\contentspage} % filler-page-format
+  %   [\twocolumn] % below-code
+  % \renewcommand{\tableofcontents}{%
+  %   \chapter*{\contentsname}%
+  %   \twocolumn%
+  %   \@starttoc{toc}%
+  %   \onecolumn%
+  % }%
+}{}

@@ -5,10 +5,6 @@
 \RequirePackage{float}    % To force placement
 \RequirePackage{etoolbox}
 
-\iftoggle{multitoc}{%
-  \RequirePackage[toc]{multitoc}
-}{}
-
 % cover
 \newkeycommand\pfMakeCover[
   image=,
@@ -18,6 +14,7 @@
 ]{
   % \onecolumn
   \thispagestyle{empty}
+  \newgeometry{left=1in,right=1in,top=1in,bottom=1in}
   \AddThispageHook{
     \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
   }
@@ -33,6 +30,7 @@
     \fillstroke{[1]}{[0]}{0.5}{\textbf{\commandkey{subtitle}}}
   \end{center}
   \clearpage
+  \restoregeometry
   % \twocolumn%
 }
 
