@@ -1,5 +1,5 @@
 \RequirePackage[titles]{tocloft}
-\RequirePackage[newparttoc]{titlesec}	% Used to adjust (sub)section formatting
+\RequirePackage[newparttoc,noindentafter]{titlesec}	% Used to adjust (sub)section formatting
 \RequirePackage{amssymb}
 \RequirePackage{everypage}
 \RequirePackage{float}    % To force placement
@@ -55,7 +55,6 @@
 }
 
 % Part splash page
-
 \newkeycommand\pfMakeSplashHeader[
   image=,
   title=Title,
@@ -155,15 +154,18 @@
 %%%%%%%%%%%%%% \section
 
 \titleformat{\section}%[block]
-{\color{title1}\pfSectionFont\LARGE}{\thesection}{0.5em}{}
-[{\titleline{\color{undergold}\titlerule[0.5pt]}}]
+{\color{title1}\pfSectionFont\LARGE\centering}
+{\thesection}
+{0.5em}
+{}
+% [{\titleline{\color{undergold}\titlerule[0.5pt]}}]
 
 %%%%%%%%%%%%%% \subsection
 
 
 \titleformat{\subsection}%[block]
 {\color{title2}\pfSubsectionFont\Large}{\thesubsection}{0.5em}{}
-[{\titleline{\color{title2}\titlerule[0.5pt]}}]
+%[{\titleline{\color{title2}\titlerule[0.5pt]}}]
 
 %%%%%%%%%%%%%% \subsubsection
 

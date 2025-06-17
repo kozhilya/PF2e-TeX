@@ -5,6 +5,7 @@
 \RequirePackage[table]{xcolor}
 \RequirePackage{tabularx}
 \RequirePackage{array}
+\RequirePackage{tabularray}
 \RequirePackage{caption}
 \RequirePackage{ifthen}
 
@@ -92,17 +93,24 @@
 }
 
 % Long Table Environment
-% \newenvironment{pf-longtable}[1][lX]{
-%     \par\vspace*{8pt}
-%     \noindent
-%     \pfTableBodyFont
-%     \rowcolors{1}{tablecolor2}{tablecolor1} % Alternate colors
-%     \supertabular{#1}
-% }{
-%     \endsupertabular
-%     \vspace{8pt plus 1pt}
-%     \noindent
-% }
+\newenvironment{pf-longtable}[1][lX]{
+  \par\vspace*{8pt}
+  \noindent
+  \begin{tblr}{
+    width=\textwidth,
+    colspec={#1},
+    cells={font={\pfTableBodyFont}},
+    row{odd}={tablecolor1,t,l},
+    row{even}={tablecolor2,t,l},
+  }
+  % \pfTableBodyFont
+  % \rowcolors{1}{tablecolor2}{tablecolor1} % Alternate colors
+  % \supertabular{#1}
+}{
+  \end{tblr}
+  \vspace{8pt plus 1pt}
+  \noindent
+}
 
 \newenvironment{pf-weapontable-tabu}{
     % \par\vspace*{8pt}
