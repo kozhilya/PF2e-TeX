@@ -323,3 +323,24 @@
     \textit{\small{#2}}
   \end{flushright}
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Common Pathfinder description block
+
+\newlength\pfDescriptionParIndentStore
+\newenvironment{pf-description}[2]{%
+  \setlength{\pfDescriptionParIndentStore}{\the\parindent}
+  \setlength{\parindent}{0pt}
+  \begingroup%
+  \bigskip%
+  {\pfStatBlockTitleFont{}\noindent #1 \hfill #2
+  
+  \hrule}
+  \vspace{3pt}
+
+  \pfStatBlockBodyFont{}
+}{%
+  \medskip%
+  \endgroup
+  \setlength{\parindent}{\pfDescriptionParIndentStore}
+}
