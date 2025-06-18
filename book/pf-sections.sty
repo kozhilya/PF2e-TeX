@@ -1,58 +1,10 @@
 \RequirePackage[titles]{tocloft}
 \RequirePackage[newparttoc,noindentafter]{titlesec}	% Used to adjust (sub)section formatting
 \RequirePackage{amssymb}
-\RequirePackage{everypage}
 \RequirePackage{float}    % To force placement
 \RequirePackage{etoolbox}
 
-% cover
-\newkeycommand\pfMakeCover[
-  image=,
-  logo=book/Paizo/Pathfinder-Second-Edition-Compatibility-Color,
-  title=Title,
-  subtitle=subtitle,
-]{
-  % \onecolumn
-  \thispagestyle{empty}
-  \newgeometry{left=1in,right=1in,top=1in,bottom=1in}
-  \AddThispageHook{
-    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
-  }
-  \begin{center}
-    \vspace*{-15mm}\includegraphics[width=5in]{\commandkey{logo}}\\*\vspace*{15mm}
-    \prociono%
-    \fontsize{48pt}{48pt}
-    \selectfont
-    \fillstroke{[1]}{[0]}{1.5}{\MakeUppercase{\commandkey{title}}}\\*
-    \normalfont\normalsize%\includegraphics[width=.5\paperwidth]{book/img/separator}
-    \LARGE\vfill
-    \fontsize{18pt}{18pt}
-    \fillstroke{[1]}{[0]}{0.5}{\textbf{\commandkey{subtitle}}}
-  \end{center}
-  \clearpage
-  \restoregeometry
-  % \twocolumn%
-}
 
-% Logo Only Cover
-\newkeycommand\pfMakeLogoCover[
-  image=,
-]{
-  \pagenumbering{alph}
-  % \onecolumn
-  \thispagestyle{empty}
-  \AddThispageHook{
-    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
-  }
-  \begin{center}
-    % This is here so the cover actually shows up.
-    % Do not remove
-  \end{center}
-  \clearpage
-  \pagenumbering{roman}
-  \setcounter{page}{0} %% Page zero is effectively the inside cover of the book.  It's also the coolest number!
-  % \twocolumn%
-}
 
 % Part splash page
 \newkeycommand\pfMakeSplashHeader[
@@ -66,7 +18,7 @@
       \ifnumodd{\thepage}{
         \vspace*{-0.8cm}
         \hspace*{-2.2cm}
-        \def\splashWidth{\paperwidth-\sidetocwidth}
+        \def\splashWidth{\paperwidth-\pf@sideTocWidth}
       }{
         \vspace*{-0.8cm}
         \hspace*{-1.5cm}
@@ -81,42 +33,8 @@
       \includegraphics[width=\splashWidth,height=15cm,keepaspectratio]{\commandkey{image}}
     }
   \end{figure*}
-
-  \begin{center}
-    % You may need to adjust this vspace to make sure the title looks good with your image aspect ratio/pixels
-    \vspace*{\commandkey{headerHeight}}
-    \prociono%
-    \fontsize{48pt}{48pt}
-    \selectfont
-    \fillstroke{[1]}{[0]}{1.5}{\MakeUppercase{\commandkey{title}}}
-    \normalfont\normalsize
-  \end{center}
-  % You might need to adjust the vspace based on the aspect ratio/pixels of your splash image
-  \vspace{\commandkey{textBodyHeight}}
 }
 
-%\newcommand*{\hbPartCover}{book/img/part-cover}
-%\newcommand*{\hbPartSubcover}{book/img/part-cover2}
-%
-%\renewcommand*{\beforepartskip}{\null\vspace*{-55pt}\hspace*{-10pt}}
-%\renewcommand*{\afterpartskip}{\clearpage\hbFullPageArtHook{\hbPartSubcover}}
-%\renewcommand*{\printpartname}{\AddThispageHook{%
-%    \thispagestyle{part}%
-%    \begin{tb*}{\paperwidth}{0pt}{0pt}%
-%      \includegraphics[width=\paperwidth,height=\paperheight]{\hbPartCover}
-%    \end{tb*}%
-%    \begin{tb*}{\paperwidth}{0pt}{0pt}%
-%      \includegraphics[width=\paperwidth]{book/img/header-part-circ}
-%    \end{tb*}%
-%    \begin{tb*}{.5\paperwidth}{0pt}{0pt}%
-%      \includegraphics[width=.5\paperwidth]{book/img/header-part}
-%    \end{tb*}%
-%    \begin{tb*}{.5\paperwidth}{.5\paperwidth}{0pt}
-%      \reflectbox{\includegraphics[width=.5\paperwidth]{book/img/header-part}}
-%    \end{tb*}%
-%  }%
-%  \hspace*{-8pt}\prociono\fontsize{64pt}{64pt}\selectfont\color{chapter}PART%
-% }
 
 % Adjust section and subsection colors and font (change 0em to 1em if you commented the removal of section numbering)
 %\titleformat{} % cmd
@@ -134,57 +52,72 @@
 
 \titleformat{\part}
 [display]
-{\thispagestyle{part}\prociono\fontsize{50pt}{50pt}\selectfont\color{title1}\filcenter}
+{\fontsize{50pt}{50pt}\selectfont\color{title1}\filcenter}
 {\partname \thepart}
 {-15pt}
-{\Large}
+{}
 
 \titlespacing*{\part}{0pt}{-54pt}{0pt}
 
 %%%%%%%%%%%%%% \chapter
 
 \titleformat{\chapter}
-[display]
-{\thispagestyle{chapter}\vspace{-80pt}\color{title1}\pfChapterFont}
-{\flushright \normalsize \color{title1} \MakeUppercase{\chaptertitlename}{\fontsize{50}{50}\selectfont \color{title1}\thechapter}}
+[block]
+% {\thispagestyle{chapter}\vspace{-80pt}\color{title1}\pfChapterFont}
+% {\flushright \normalsize \color{title1} \MakeUppercase{\chaptertitlename}{\fontsize{50}{50}\selectfont \color{title1}\thechapter}}
+{}
+{\centering\pfChapterSubFont\chaptertitlename\ \thechapter:\\[-0.8em]}
 {-1em}
-{\Huge}
-[{\titleline{\color{undergold}\titlerule[2pt]}}\vspace{-30pt}]
+{\centering\pfChapterFont}
+% [{\titleline{\color{undergold}\titlerule[2pt]}}\vspace{-30pt}]
+
+\titlespacing{\chapter}{0pt}{0pt}{0pt}
 
 %%%%%%%%%%%%%% \section
 
 \titleformat{\section}%[block]
-{\color{title1}\pfSectionFont\LARGE\centering}
+{\pfSectionFont\centering}
 {\thesection}
 {0.5em}
 {}
 % [{\titleline{\color{undergold}\titlerule[0.5pt]}}]
 
+\titlespacing{\section}{0pt}{1em}{0pt}
+
 %%%%%%%%%%%%%% \subsection
 
-
 \titleformat{\subsection}%[block]
-{\color{title2}\pfSubsectionFont\Large}{\thesubsection}{0.5em}{}
+{\pfSubsectionFont}{\thesubsection}{0.5em}{}
 %[{\titleline{\color{title2}\titlerule[0.5pt]}}]
+
+\titlespacing{\subsection}{0pt}{1em}{0pt}
 
 %%%%%%%%%%%%%% \subsubsection
 
 \titleformat{\subsubsection}
-{\color{title3}\pfSubsubsectionFont\large}{\thesubsubsection}{0em}{}[]
+{\pfSubsubsectionFont}{\thesubsubsection}{0em}{}[]
+
+\titlespacing{\subsubsection}{0pt}{1em}{0pt}
 
 %%%%%%%%%%%%%% \paragraph
 
 \titleformat{\paragraph}
-{\color{title3}\pfParagraphFont\normalsize\large}{\theparagraph}{0em}{}
+{\pfParagraphFont}{\theparagraph}{0em}{}
 
 %%%%%%%%%%%%%% \subparagraph
 
 \titleformat{\subparagraph}[runin]
-{\pfSubparagraphFont\normalsize\bfseries\slshape}
+{\pfSubparagraphFont}
 {\thesubparagraph\quad}
 {0pt}
 {}
 [.]
+
+% \titleformat{\subparagraph*}[runin]
+% {\pfSubparagraphFont}
+% {\thesubparagraph\quad}
+% {0pt}
+% {}
 
 \titlespacing*{\subparagraph}{\parindent}{\parskip}{\wordsep}
 

@@ -3,8 +3,8 @@
 
 % TOC types:
 %   - onecolumn - Chapters and sections in 1 column.
-%   - twocolumn - Chapters and sections in common 2 columns enviroment.
-%   - mixed - Chapters in wide, sections of same shpater in 2 columns.
+%   - twocolumn - Chapters and sections in common 2 columns environment.
+%   - mixed - Chapters in wide, sections of same chapter in 2 columns.
 
 \typeout{tocStyle value = \pf@tocStyle}
 % Explain \strcompare to TeX
@@ -17,8 +17,15 @@
   \typeout{tocStyle = onecolumn}
 
   \renewcommand{\tableofcontents}{%
+    \if@twocolumn
+      \def\pf@aftertoc{\twocolumn}
+    \else
+      \def\pf@aftertoc{}
+    \fi
+    \onecolumn
     \chapter*{\contentsname}
     \@starttoc{toc}
+    \pf@aftertoc
   }
 }{}
 
@@ -27,10 +34,14 @@
   \typeout{tocStyle = twocolumn}
 
   \renewcommand{\tableofcontents}{%
-    \chapter*{\contentsname}
-    \begin{multicols}{2}
-      \@starttoc{toc}
-    \end{multicols}
+    \if@twocolumn
+      \def\pf@aftertoc{}
+    \else
+      \def\pf@aftertoc{\onecolumn}
+    \fi
+    \twocolumn[\chapter*{\contentsname}]
+    \@starttoc{toc}
+    \pf@aftertoc
   }
 }{}
 
@@ -66,3 +77,89 @@
 
 %{\@dottedtocline{2}{1.5em}{2.3em}{\etocifnumbered{\numberline{etocnumber}}{}%
 %\etocname}{\etocpage}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Side TOC
+
+\newcommand{\pf@sideTocXShift}{-0.0cm}
+\newcommand{\pf@sideTocYShift}{-2.3cm}
+\newcommand{\pf@sideTocWidth}{3.25cm}
+\newcommand{\pf@sideTocHeight}{22.5cm}
+
+\iftoggle{side-toc}{%
+  % 1. \chapter{} adds new \sidetocitem entry in .toc using \pf@addSideTocChapter (see \apptocmd{\Hy@org@chapter})
+  % 2. 
+
+  \newcommand{\displaychapterlist}{} % List of chapters, loaded from .toc file
+  \newcommand{\currentchapter}{} % To highlight current chapter
+
+  % Command to add a chapter to the build list
+  \newcommand{\pf@addSideTocChapter}[1]{%
+    \addtocontents{toc}{\protect\sidetocitem {#1}}%
+    \gdef\currentchapter{#1}%
+  }
+
+  % Add chapter name from .toc file
+  \newcommand{\sidetocitem}[1]{%
+    \listgadd{\displaychapterlist}{#1}%
+    \PackageInfo{pf}{Added sidetoc item - #1}%
+  }
+  
+  % Apply modification to the original chapter command
+  \apptocmd{\Hy@org@chapter}{%
+    \pf@addSideTocChapter{\chaptername\ \thechapter:\ #2}%
+  }{}{}
+
+  % Common element of side TOC
+  \newcommand{\sideTocChapterFormat}[2]{%
+    \parbox%
+      {\pf@sideTocWidth}%
+      {\pfSideTocFont\color{#1}#2}%
+  }
+
+  % Not highlighted element of side TOC
+  \newcommand{\sideTocChapterDefault}[1]{%
+    \setlength{\fboxrule}{0pt}%
+    \framebox{%
+    \sideTocChapterFormat{sideTocText}{#1}%
+    }%
+    \par%
+  }
+
+  % Highlighted element of side TOC
+  \newcommand{\sideTocChapterCurrent}[1]{%
+    \colorbox{sideTocCurrentBackground}{%
+    \sideTocChapterFormat{sideTocCurrentText}{#1}%
+    }%
+    \par%
+  }
+
+  % Command to render side TOC int tikzpicture environment
+  \newcommand{\pf@renderSideTocChapter}{
+    \node[anchor=north east, inner sep=0pt, xshift=\pf@sideTocXShift, yshift=\pf@sideTocYShift] at (current page.north east) {%
+      \begin{minipage}[t][\pf@sideTocHeight]{\pf@sideTocWidth}%
+        \renewcommand*{\do}[1]{%
+          \IfStrEq%
+            {##1}%
+            {\currentchapter}%
+            {\sideTocChapterCurrent{##1}}%
+            {\sideTocChapterDefault{##1}}%
+        }%
+        \dolistloop{\displaychapterlist}%
+      \end{minipage}%
+    };%
+  }
+}{%
+  \newcommand{\sidetocitem}[1]{}
+  \newcommand{\pf@addSideTocChapter}[1]{}
+  \newcommand{\pf@renderSideTocChapter}{}  
+}
+
+% New chapter style that don't have number but included in toc and side-toc
+% Added because main TOC title uses \chapter*, and we do not want to add it to side TOC
+% May be need to work around it, but may be later.
+\newcommand{\schapter}[1]{%
+  \chapter*{#1}%
+  \pf@addSideTocChapter{#1}%
+  \addcontentsline{toc}{chapter}{#1}%
+}

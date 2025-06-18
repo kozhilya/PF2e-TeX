@@ -72,29 +72,11 @@
     \togglefalse{bool-bg}
     \toggletrue{bool-footer-scroll}
     \fi
+    \PackageInfo{pf}{bg is set to \val}
   }{%
     \PackageWarning{pf}{\val\ is not a valid choice for bg and was ignored}
   }
 }
-
-% Legacy bg option variants.
-\DeclareOptionX{bg-full}{%
-  \pf@deprecate{bg-full}{0.7}[Use bg=full instead.]
-  \toggletrue{bool-bg}
-  \toggletrue{bool-footer-scroll}
-}
-\DeclareOptionX{bg-none}{%
-  \pf@deprecate{bg-none}{0.7}[Use bg=none instead.]
-  \togglefalse{bool-bg}
-  \togglefalse{bool-footer-scroll}
-}
-\DeclareOptionX{bg-print}{%
-  \pf@deprecate{bg-print}{0.7}[Use bg=print instead.]
-  \togglefalse{bool-bg}
-  \toggletrue{bool-footer-scroll}
-}
-\DeclareOptionX{bg-a4}{\pf@deprecate{bg-a4}{0.7}[Remove call to this package option.]}
-\DeclareOptionX{bg-letter}{\pf@deprecate{bg-letter}{0.7}[Remove call to this package option.]}
 
 % Toggle justification (official books are flush left).
 \newtoggle{justified}
@@ -104,8 +86,9 @@
 \DeclareOptionX{toc}[onecolumn]{%
   \XKV@cc*+[\val\index]{#1}{onecolumn,twocolumn,mixed}{%
     \def\pf@tocStyle{#1}%
+    \PackageInfo{pf}{TOC is set to \val}
   }{%
-    \PackageWarning{pf}{\val\ is not a valid choice for bg and was ignored}%
+    \PackageWarning{pf}{\val\ is not a valid choice for toc and was ignored}%
   }%
 }
 
@@ -117,7 +100,10 @@
 % Draw toc on side of pages
 \newtoggle{side-toc}
 \settoggle{side-toc}{false}
-\DeclareOptionX{side-toc}{\toggletrue{side-toc}}
+\DeclareOptionX{side-toc}{
+  \PackageInfo{pf}{Side TOC is active}
+  \toggletrue{side-toc}
+}
 
 % Default Settings
 \ExecuteOptionsX{bg=full}
@@ -134,11 +120,17 @@
 % Page geometry
 \iftoggle{side-toc}{%
   \RequirePackage[
-    top=3cm,
-    left=2cm,   % inner edge
+    bindingoffset=1.3cm,
+    head=2.7cm,
+    foot=2cm,
+    top=0cm,
+    bottom=0cm,
+    left=1cm,   % inner edge
     right=4cm,  % outer edge
-    bottom=3cm,
+    includeheadfoot,
+    ignoremp,
     twoside,
+    % showframe,
   ]{geometry}
 }{
   \RequirePackage[
@@ -175,19 +167,14 @@
 \RequirePackage{book/pf-license}
 
 % Toggle page style
-
-\iftoggle{side-toc}{%
-  \RequirePackage{book/pf-pagestyle-side-toc}
-}{
-  \RequirePackage{book/pf-pagestyle}
-}
-  \RequirePackage{book/pf-toc}
+\RequirePackage{book/pf-pagestyle}
+\RequirePackage{book/pf-toc}
 
 
 % Set paragraph and line spacing
 %\linespread{1.1}%
 %\setlength{\parindent}{1em}
-\setlength{\parindent}{15pt}
+\setlength{\parindent}{10pt}
 %\setlength{\RaggedRightRightskip}{0pt plus 1cm}
 %\setlength{\RaggedRightParindent}{\parindent}
 %\hyphenpenalty=1000  % Fewer hyphens
