@@ -61,17 +61,21 @@
 
 %%%%%%%%%%%%%% \chapter
 
+\def\chapterVspaceBefore{0pt}
+
+\patchcmd{\chapter}{\thispagestyle {plain}}{}{}{}
+
 \titleformat{\chapter}
 [block]
-% {\thispagestyle{chapter}\vspace{-80pt}\color{title1}\pfChapterFont}
-% {\flushright \normalsize \color{title1} \MakeUppercase{\chaptertitlename}{\fontsize{50}{50}\selectfont \color{title1}\thechapter}}
 {}
 {\centering\pfChapterSubFont\chaptertitlename\ \thechapter:\\[-0.8em]}
 {-1em}
 {\centering\pfChapterFont}
 % [{\titleline{\color{undergold}\titlerule[2pt]}}\vspace{-30pt}]
 
-\titlespacing{\chapter}{0pt}{0pt}{0pt}
+\titlespacing{\chapter}{0pt}{\chapterVspaceBefore%
+% \def\chapterVspaceBefore{0pt}
+}{0pt}
 
 %%%%%%%%%%%%%% \section
 

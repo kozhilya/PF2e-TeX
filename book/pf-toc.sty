@@ -51,7 +51,7 @@
   \typeout{tocStyle = mixed}%
   
   % I couldn't figure it out myself.
-  % OpenAI and Deppseek either.
+  % OpenAI and Deepseek either.
   % Stack Overflow did.
   % We are still alive!!!
   % https://tex.stackexchange.com/questions/746229/mixing-columns-count-in-table-of-contents
@@ -60,13 +60,13 @@
 
   \setcounter{tocdepth}{1} % Parts, chapters and sections
 
-  \renewcommand*\l@chapter{\@dottedtocline{0}{1.5em}{2.3em}}
+  \renewcommand*\l@chapter{\@dottedtocline{0}{0em}{0em}}
   \renewcommand*\l@section{\@dottedtocline{1}{0em}{0em}}
 
   \etocsetstyle{chapter}
     {}
     {}
-    {\l@chapter{\numberline{\chaptertitlename \etocnumber}\etocname}{\etocpage}}
+    {\l@chapter{\bfseries \chaptertitlename\ \etocnumber:\ \etocname}{\etocpage}}
     {}
   \etocsetstyle{section}
     {\begin{multicols}{2}}
@@ -81,9 +81,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Side TOC
 
-\newcommand{\pf@sideTocXShift}{-0.0cm}
+\newcommand{\pf@sideTocXShift}{-0.25cm}
 \newcommand{\pf@sideTocYShift}{-2.3cm}
-\newcommand{\pf@sideTocWidth}{3.25cm}
+\newcommand{\pf@sideTocWidth}{3.0cm}
 \newcommand{\pf@sideTocHeight}{22.5cm}
 
 \iftoggle{side-toc}{%
@@ -107,7 +107,9 @@
   
   % Apply modification to the original chapter command
   \apptocmd{\Hy@org@chapter}{%
-    \pf@addSideTocChapter{\chaptername\ \thechapter:\ #2}%
+  % \apptocmd{\chapter}{%
+    \typeout{##2 registered in side TOC}%
+    \pf@addSideTocChapter{\chaptername\ \thechapter:\ ##2}%
   }{}{}
 
   % Common element of side TOC

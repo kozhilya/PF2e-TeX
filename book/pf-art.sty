@@ -1,13 +1,36 @@
 \RequirePackage{graphicx}
-% \RequirePackage{dblfloatfix}
 \RequirePackage[strict]{changepage}
+\RequirePackage{afterpage}
 
-\makeatletter
 \newenvironment{figurehere}
   {\def\@captype{figure}}
   {}
-\makeatother
 
+\def\pf@backgroundArt{}
+
+% After page that
+%   - Works with twoside
+%   - Makes \aftergroup
+\newcommand{\pf@afterpage}[2][]{
+  \if@twoside%
+    \afterpage{%
+      \if@firstcolumn%
+        \typeout{pf@afterpage - executing "#1"}%
+        % \aftergroup#2%
+        #2%
+      \else%
+        \typeout{pf@afterpage - not ready to execute "#1" (ended column, not page)}%
+        \pf@afterpage[#1]{#2}%
+      \fi%
+    }%
+  \else%
+    \afterpage{%
+      \typeout{pf@afterpage - executing "#1"}%
+      % \aftergroup#2%
+      #2%
+    }%
+  \fi%
+}
 
 % cover
 \newkeycommand\pfMakeCover[
@@ -17,11 +40,13 @@
   subtitle=subtitle,
 ]{
   % \onecolumn
-  \thispagestyle{empty}
+  \thispagestyle{artpage}
+  \def\pf@backgroundArt{\commandkey{image}}
+
   \newgeometry{left=1in,right=1in,top=1in,bottom=1in}
-  \AddToHookNext{shipout/background}{
-    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
-  }
+  % \AddToHookNext{shipout/background}{
+  %   \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
+  % }
   \begin{center}
     \vspace*{-15mm}\includegraphics[width=5in]{\commandkey{logo}}\\*\vspace*{15mm}
     \fontsize{48pt}{48pt}
@@ -34,34 +59,30 @@
   \end{center}
   % \clearpage
   \restoregeometry
+  % \thispagestyle{}
   % \twocolumn%
 }
 
-% Logo Only Cover
-\newkeycommand\pfMakeLogoCover[
-  image=,
-]{
-  \pagenumbering{alph}
-  % \onecolumn
-  \thispagestyle{empty}
-  \AddThispageHook{
-    \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center){\includegraphics[width=\paperwidth,height=\paperheight]{\commandkey{image}}};
-  }
-  \begin{center}
-    % This is here so the cover actually shows up.
-    % Do not remove
-  \end{center}
+% Full page art
+\newcommand{\pfPageArt}[1]{%
   \clearpage
-  \pagenumbering{roman}
-  \setcounter{page}{0} %% Page zero is effectively the inside cover of the book.  It's also the coolest number!
-  % \twocolumn%
+  \thispagestyle{artpage}
+  \def\pf@backgroundArt{#1}
+  % \thispagestyle{empty}
+  \newgeometry{left=1in,right=1in,top=1in,bottom=1in}
+  1
+  % \def\pf@backgroundArt{#1}
+  % \AddToHookNext{shipout/background}{
+  %   \tikz[remember picture,overlay] \node[inner sep=0pt] at (current page.center)%
+  %     {\includegraphics[width=\paperwidth,height=\paperheight]{#1}};
+  % }
+  \restoregeometry
 }
 
 % Splash art
-\newcommand{\renderSplashImage}{}
-  
-\newcommand{\addPageSplash}[1]{%
-  \thispagestyle{splash}%
+\newcommand{\pf@splashImage}{}
+
+\newcommand{\pf@updateSplashDimenstions}{
   \iftoggle{side-toc}{
     \ifnumodd{\thepage}{
       % \vspace*{-0.8cm}
@@ -86,17 +107,40 @@
     \def\splashShiftY{0pt}
     \def\splashWidth{\paperwidth}
   }
-  \def\splashImage{#1}
-  \renewcommand{\renderSplashImage}{
-    \node[inner sep=0pt,anchor=\splashAnchor,xshift=\splashShiftX,yshift=\splashShiftY] at (current page.\splashAnchor) {%
-      \includegraphics[width=\splashWidth,keepaspectratio]{\splashImage}%
-    };%
-  }
-  % \begin{figure*}[t]
-  %   \vspace*{#2}
-  % \end{figure*}
 }
 
+\newcommand{\pf@renderSplashImage}{  
+  \pf@updateSplashDimenstions
+  \typeout{Rendering splash \pf@splashImage}
+  \node[inner sep=0pt,anchor=\splashAnchor,xshift=\splashShiftX,yshift=\splashShiftY] at (current page.\splashAnchor) {%
+    \includegraphics[width=\splashWidth,keepaspectratio]{\pf@splashImage}%
+  };%
+}
+  
+\newcommand{\pf@addPageSplashNow}[2]{
+  \global\def\pf@splashImage{#1}
+  % \renewcommand{\pf@splashImage}{#1}
+
+  \typeout{Splash 1=\pf@splashImage\ 2=#2}
+  
+  \newgeometry{top=#2}%
+  \makegeometryglobal%
+  \thispagestyle{splash}%
+
+  \pf@afterpage[restoregeometry]{\restoregeometry\makegeometryglobal}
+  % \afterpage{\restoregeometry\makegeometryglobal}
+}
+
+\newcommand{\pf@nextSplash}{}
+
+\newcommand{\pf@addPageSplash}[2]{
+  \renewcommand{\pf@nextSplash}{\pf@addPageSplashNow{#1}{#2}}
+  % \pf@afterpage[pf@nextSplash]{\pf@nextSplash}%
+  \pf@afterpage[pf@nextSplash]{\pf@nextSplash}%
+  \typeout{Splash next page 1=#1\ 2=#2}
+}
+
+\newcommand{\addPageSplash}{\@ifstar{\pf@addPageSplashNow}{\pf@addPageSplash}}
 
 % Big art
 \newlength{\pfhmargin}
@@ -170,4 +214,47 @@
         keepaspectratio,
       ]{#2}%
   }
+}
+
+
+
+
+\NewDocumentCommand{\makegeometryglobal}{ }
+{%
+  %% lengths saved in \Gm@save and set by \Gm@restore
+  \global\paperwidth=\paperwidth%
+  \global\paperheight=\paperheight%
+  \global\textwidth=\textwidth%
+  \global\textheight=\textheight%
+  \global\evensidemargin=\evensidemargin%
+  \global\oddsidemargin=\oddsidemargin%
+  \global\topmargin=\topmargin%
+  \global\headheight=\headheight%
+  \global\headsep=\headsep%
+  \global\topskip=\topskip%
+  \global\footskip=\footskip%
+  \global\baselineskip=\baselineskip%
+  \global\marginparsep=\marginparsep%
+  \global\marginparwidth=\marginparwidth%
+  \global\columnsep=\columnsep%
+  \global\hoffset=\hoffset%
+  \global\voffset=\voffset%
+  \global\Gm@layoutwidth=\Gm@layoutwidth%
+  \global\Gm@layoutheight=\Gm@layoutheight%
+  \global\Gm@layouthoffset=\Gm@layouthoffset%
+  \global\Gm@layoutvoffset=\Gm@layoutvoffset%
+  %% booleans saved in \Gm@save and set by \Gm@restore
+  \global\let\if@twocolumn\if@twocolumn%
+  \global\let\if@twoside\if@twoside%
+  \global\let\if@mparswitch\if@mparswitch%
+  \global\let\if@reversemargin\if@reversemargin%
+  %% lengths set in \Gm@changelayout
+  \global\@colht=\@colht%
+  \global\@colroom=\@colroom%
+  \global\vsize=\vsize%
+  \global\columnwidth=\columnwidth%
+  \global\hsize=\hsize%
+  \global\linewidth=\linewidth%
+  %% boolean set in \Gm@changelayout
+  \global\let\if@firstcolumn\if@firstcolumn%
 }

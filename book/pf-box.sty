@@ -287,24 +287,30 @@
   }
 }
 
-\newtcolorbox{pf-quotebox}{enhanced jigsaw,frame hidden,boxrule=0pt,
+\newtcolorbox{pf-quotebox}{
+  enhanced jigsaw,
+  frame hidden,
+  boxrule=0pt,
   enhanced,
-  toptitle=3mm,
-  boxsep=0.25ex,
-  left=8pt,
-  right=8pt,
-  colback=bgtan,
-  colframe=bgtan,
-  colbacktitle=bgtan,
+  boxsep=0pt,
+  top=8pt,
+  bottom=8pt,
+  left=0pt,
+  right=0pt,
+  colback=white,
+  colframe=white,
+  colbacktitle=white,
   arc=0mm,
-  fonttitle=\pfBoxTitleFont,
-  borderline west={1pt}{-0.5pt}{title1},
-  borderline east={1pt}{-0.5pt}{title1},
-  fontupper=\pfBoxBodyFont,
+  enlarge top initially by=-6pt,
+  enlarge bottom finally by=-6pt,
+  borderline north={1pt}{-0.5pt}{quote},
+  borderline south={1pt}{-0.5pt}{quote},
+  coltext=quote,
+  fontupper=\pfQuoteFont,
   %title=#2,
-  overlay={
-    \foreach \n in {north east,north west,south east,south west}
-    {\draw [title1, fill=title1] (frame.\n) circle (2pt); }; },
+  % overlay={
+  %   \foreach \n in {north east,north west,south east,south west}
+  %   {\draw [title1, fill=title1] (frame.\n) circle (2pt); }; },
   after={\vspace{5pt plus 1pt}\noindent},
   breakable
 }

@@ -27,13 +27,17 @@
 \renewcommand{\headrulewidth}{0.0pt} %no rule for header
 \renewcommand{\footrulewidth}{0.0pt} %no rule for footer
 
+\newcommand{\pf@renderBackground}[1]{
+  \node[inner sep=0pt,anchor=center] at (current page.center) {\includegraphics[width=\pf@backgroundScale\paperwidth,height=\pf@backgroundScale\paperheight]{#1}};
+}
 \newcommand{\pf@renderPageNumber}{\pfPageNumberFont\textcolor{pfFooterColor}{\thepage}}
+\newcommand{\pf@backgroundScale}{1.0}
 
 \fancyhf{} % clear all headers and footers
 
 \fancyhead[O]{
   \begin{tikzpicture}[remember picture,overlay]
-    \node[inner sep=0pt] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{\backgroundr}};
+    \pf@renderBackground{\backgroundr}
     \node[xshift=-\footerPageXShift,yshift=\footerPageYShift] at (current page.south east) {\pf@renderPageNumber};
     \pf@renderSideTocChapter
   \end{tikzpicture}%
@@ -41,30 +45,51 @@
 
 \fancyhead[E]{
   \begin{tikzpicture}[remember picture,overlay]
-    \node[inner sep=0pt] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{\backgroundl}};
+    \pf@renderBackground{\backgroundl}
     \node[xshift=\footerPageXShift,yshift=\footerPageYShift] at (current page.south west) {\pf@renderPageNumber};
   \end{tikzpicture}
 }
 
 \fancypagestyle{plain}{}
 
-\fancypagestyle{splash}{
+\fancypagestyle{empty}{}
+
+\fancypagestyle{artpage}{
   \fancyhf{} % clear all headers and footers
 
   \fancyhead[O]{
     \begin{tikzpicture}[remember picture,overlay]
-      \renderSplashImage
-      \node[inner sep=0pt] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{\backgroundr}};
-      \node[xshift=\footerPageXShift,yshift=\footerPageYShift] at (current page.south west) {\pf@renderPageNumber!};
+      \pf@renderBackground{\pf@backgroundArt}
       \pf@renderSideTocChapter
     \end{tikzpicture}
   }
 
   \fancyhead[E]{
     \begin{tikzpicture}[remember picture,overlay]
-      \renderSplashImage
-      \node[inner sep=0pt] at (current page.center) {\includegraphics[width=\paperwidth,height=\paperheight]{\backgroundl}};
-      \node[xshift=\footerPageXShift,yshift=\footerPageYShift] at (current page.south west) {\pf@renderPageNumber!};
+      \pf@renderBackground{\pf@backgroundArt}
+    \end{tikzpicture}
+  }
+}
+
+\fancypagestyle{splash}{
+  \fancyhf{} % clear all headers and footers
+
+  % \fancyheadoffset{O,E}{\pf@splashSpace}
+
+  \fancyhead[O]{
+    \begin{tikzpicture}[remember picture,overlay]
+      \pf@renderSplashImage
+      \pf@renderBackground{\backgroundr}
+      \node[xshift=-\footerPageXShift,yshift=\footerPageYShift] at (current page.south east) {\pf@renderPageNumber\color{white}!!!O};
+      \pf@renderSideTocChapter
+    \end{tikzpicture}
+  }
+
+  \fancyhead[E]{
+    \begin{tikzpicture}[remember picture,overlay]
+      \pf@renderSplashImage
+      \pf@renderBackground{\backgroundl}
+      \node[xshift=\footerPageXShift,yshift=\footerPageYShift] at (current page.south west) {\pf@renderPageNumber\color{white}!!!E};
     \end{tikzpicture}
   }
 }
