@@ -80,8 +80,6 @@
 }
 
 % Splash art
-\newcommand{\pf@splashImage}{}
-
 \newcommand{\pf@updateSplashDimenstions}{
   \iftoggle{side-toc}{
     \ifnumodd{\thepage}{
@@ -89,14 +87,14 @@
       % \hspace*{-2.2cm}
       \def\splashAnchor{north west}
       \def\splashShiftX{0pt}
-      \def\splashShiftY{-2cm}
+      \def\splashShiftY{-\pf@splashShift}
       \def\splashWidth{\paperwidth-3.1cm}
     }{
       % \vspace*{-0.8cm}
       % \hspace*{-1.5cm}
       \def\splashAnchor{north east}
       \def\splashShiftX{0cm}
-      \def\splashShiftY{-2cm}
+      \def\splashShiftY{-\pf@splashShift}
       \def\splashWidth{\paperwidth-2.5cm}
     }
   }{
@@ -104,26 +102,26 @@
     % \hspace*{-1.5cm}
     \def\splashAnchor{north}
     \def\splashShiftX{0pt}
-    \def\splashShiftY{0pt}
+    \def\splashShiftY{-\pf@splashShift}
     \def\splashWidth{\paperwidth}
   }
 }
 
 \newcommand{\pf@renderSplashImage}{  
-  \pf@updateSplashDimenstions
   \typeout{Rendering splash \pf@splashImage}
+  \pf@updateSplashDimenstions
   \node[inner sep=0pt,anchor=\splashAnchor,xshift=\splashShiftX,yshift=\splashShiftY] at (current page.\splashAnchor) {%
     \includegraphics[width=\splashWidth,keepaspectratio]{\pf@splashImage}%
   };%
 }
   
-\newcommand{\pf@addPageSplashNow}[2]{
-  \global\def\pf@splashImage{#1}
-  % \renewcommand{\pf@splashImage}{#1}
-
-  \typeout{Splash 1=\pf@splashImage\ 2=#2}
+\newcommand{\pf@addPageSplashNow}[3][2.0cm]{
+  \global\def\pf@splashShift{#1}
+  \global\def\pf@splashImage{#2}
   
-  \newgeometry{top=#2}%
+  \typeout{Splash 1=\pf@splashShift 2=\pf@splashImage 3=#3}
+  
+  \newgeometry{top=#3}%
   \makegeometryglobal%
   \thispagestyle{splash}%
 
@@ -133,11 +131,11 @@
 
 \newcommand{\pf@nextSplash}{}
 
-\newcommand{\pf@addPageSplash}[2]{
-  \renewcommand{\pf@nextSplash}{\pf@addPageSplashNow{#1}{#2}}
+\newcommand{\pf@addPageSplash}[3][2.0cm]{
+  \renewcommand{\pf@nextSplash}{\pf@addPageSplashNow[#1]{#2}{#3}}
   % \pf@afterpage[pf@nextSplash]{\pf@nextSplash}%
   \pf@afterpage[pf@nextSplash]{\pf@nextSplash}%
-  \typeout{Splash next page 1=#1\ 2=#2}
+  \typeout{Splash next page 1=#1 2=#2 3=#3}
 }
 
 \newcommand{\addPageSplash}{\@ifstar{\pf@addPageSplashNow}{\pf@addPageSplash}}

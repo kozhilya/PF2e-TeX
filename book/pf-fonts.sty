@@ -20,7 +20,7 @@
   BoldItalicFont = *-BoldItalic,
 ]
 
-\setsansfont{Roboto}[
+\setsansfont{AlegreyaSans}[
   Extension=.ttf,
   UprightFont = *-Regular,
   BoldFont = *-Bold,
@@ -29,10 +29,28 @@
   Scale=MatchLowercase,
 ]
 
+% \setsansfont{Roboto}[
+%   Extension=.ttf,
+%   UprightFont = *-Regular,
+%   BoldFont = *-Bold,
+%   ItalicFont = *-Italic,
+%   BoldItalicFont = *-BoldItalic,
+%   Scale=MatchLowercase,
+% ]
+
 \newfontfamily\condensed{Oswald}[
   Extension=.ttf,
   UprightFont = *-Regular,
   BoldFont = *-Bold,
+  Scale=MatchLowercase,
+]
+
+\newfontfamily\titlefont{Alegreya}[
+  Extension=.ttf,
+  UprightFont = *-Regular,
+  BoldFont = *-Bold,
+  ItalicFont = *-Italic,
+  BoldItalicFont = *-BoldItalic,
   Scale=MatchLowercase,
 ]
 
@@ -41,7 +59,7 @@
 \newcommand{\pfTitleFont}{\normalfont\bfseries}
 \newcommand{\pfCondensedTitleFont}{\condensed\bfseries}
 
-\newcommand{\pfChapterFont}{\pfTitleFont\Huge\color{title1}}
+\newcommand{\pfChapterFont}{\titlefont\bfseries\Huge\color{title1}}
 \newcommand{\pfChapterSubFont}{\pfTitleFont\Large\color{title1}}
 \newcommand{\pfSectionFont}{\pfTitleFont\Large\color{title1}}
 \newcommand{\pfSubsectionFont}{\pfCondensedTitleFont\large\color{title2}\MakeUppercase}
