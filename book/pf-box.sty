@@ -337,14 +337,14 @@
   \setlength{\parindent}{0pt}
   \begingroup%
   \bigskip%
-  {\pfStatBlockTitleFont{}\noindent #1 \hfill #2
+  {\pfStatBlockTitleFont{#1 \hfill #2}}
   
-  \hrule}
-  \vspace{3pt}
+  \pfhline
 
-  \pfStatBlockBodyFont{}
+  \pfStatBlockBodyFont
 }{%
   \medskip%
   \endgroup
   \setlength{\parindent}{\pfDescriptionParIndentStore}
+  % \vspace{0.3cm}
 }

@@ -7,11 +7,6 @@
 
 % Font definitions
 
-\newfontfamily\pfIcons[
-  Extension = .ttf,
-  UprightFont = *,
-]{Pathfinder-Icons}
-
 \setmainfont{GentiumPlus}[
   Extension=.ttf,
   UprightFont = *-Regular,
@@ -54,14 +49,21 @@
   Scale=MatchLowercase,
 ]
 
+\newfontfamily\pfIcons[
+  Extension=.ttf,
+  UprightFont=*,
+  Scale=MatchLowercase,
+]{Pathfinder-Icons}
+
+
 % Font settings
 
 \newcommand{\pfTitleFont}{\normalfont\bfseries}
 \newcommand{\pfCondensedTitleFont}{\condensed\bfseries}
 
 \newcommand{\pfChapterFont}{\titlefont\bfseries\Huge\color{title1}}
-\newcommand{\pfChapterSubFont}{\pfTitleFont\Large\color{title1}}
-\newcommand{\pfSectionFont}{\pfTitleFont\Large\color{title1}}
+\newcommand{\pfChapterSubFont}{\titlefont\bfseries\LARGE\color{title1}}
+\newcommand{\pfSectionFont}{\titlefont\bfseries\LARGE\color{title1}}
 \newcommand{\pfSubsectionFont}{\pfCondensedTitleFont\large\color{title2}\MakeUppercase}
 \newcommand{\pfSubsubsectionFont}{\pfCondensedTitleFont\large\color{title3}}
 \newcommand{\pfParagraphFont}{\normalfont\color{title3}}
@@ -75,11 +77,11 @@
 
 \newcommand{\pfQuoteFont}{\sffamily}
 
-\newcommand{\pfStatBlockTitleFont}{\condensed\bfseries\Large}
+\newcommand{\pfStatBlockTitleFont}{\condensed\bfseries\large\MakeUppercase}
 \newcommand{\pfStatBlockSubtitleFont}{\sffamily}
 \newcommand{\pfStatBlockBodyFont}{\sffamily}
 
-\newcommand{\pfTraitFont}{\condensed\small\color{traitfont}}
+\newcommand{\pfTraitFont}{\condensed\small\color{traitfont}\MakeUppercase}
 
 \newcommand{\pfFooterFont}{\normalfont\scshape}
 \newcommand{\pfPageNumberFont}{\normalfont}

@@ -24,25 +24,32 @@
 %   \end{wrapfigure}%
 % }
 
+\def\pf@traitHeight{1.5em}
+\def\pf@traitTBrule{0.8pt}
+\def\pf@traitLRrule{2.5pt}
+
 \newcommand{\metatrait}[3]{%
   \noindent\setlength\intextsep{0pt}%
   \begin{tcolorbox}[hbox,
+                    % tcbox raise base,
                     colframe=#1,
                     colback=#2,
-                    % arc=0pt,
                     sharp corners,
-                    height=7mm,
                     valign=center,
-                    % box align=center,
-                    halign=flush center,
-                    left*=1mm,
-                    right*=1mm,
-                    % top=-1mm,
-                    % bottom=-2mm,
+                    halign=center,
+                    left=-0pt,
+                    right=0pt,
+                    height=\pf@traitHeight,
+                    toprule=\pf@traitTBrule,
+                    bottomrule=\pf@traitTBrule,
+                    leftrule=\pf@traitLRrule,
+                    rightrule=\pf@traitLRrule,
+                    enlarge right by=-\pf@traitLRrule,
                     nobeforeafter,
                   ]%
-    \pfTraitFont{} \uppercase{#3}
+    {\pfTraitFont{#3}}%
   \end{tcolorbox}%
+  \ignorespaces%
 }
 
 % Basic trait command
@@ -51,29 +58,29 @@
 % Size traits
 \newcommand{\sizetrait}[1]{\metatrait{traitborder}{sizeColor}{#1}}
 
-\newcommand{\pfTiny}{\sizetrait{Tiny}}
-\newcommand{\pfSmall}{\sizetrait{Small}}
-\newcommand{\pfMedium}{\sizetrait{Medium}}
-\newcommand{\pfLarge}{\sizetrait{Large}}
-\newcommand{\pfHuge}{\sizetrait{Huge}}
-\newcommand{\pfGargantuan}{\sizetrait{Gargantuan}}
+\newcommand{\pfTiny}{\sizetrait{\traittinytext}}
+\newcommand{\pfSmall}{\sizetrait{\traitsmalltext}}
+\newcommand{\pfMedium}{\sizetrait{\traitmediumtext}}
+\newcommand{\pfLarge}{\sizetrait{\traitlargetext}}
+\newcommand{\pfHuge}{\sizetrait{\traithugetext}}
+\newcommand{\pfGargantuan}{\sizetrait{\traitgargantuantext}}
 
 % Alignment traits
 \newcommand{\aligntrait}[1]{\metatrait{traitborder}{alignColor}{#1}}
 
-\newcommand{\pfLG}{\aligntrait{LG}}
-\newcommand{\pfNG}{\aligntrait{NG}}
-\newcommand{\pfCG}{\aligntrait{CG}}
+\newcommand{\pfLG}{\aligntrait{\traitLGtext}}
+\newcommand{\pfNG}{\aligntrait{\traitNGtext}}
+\newcommand{\pfCG}{\aligntrait{\traitCGtext}}
 
-\newcommand{\pfLN}{\aligntrait{LN}}
-\newcommand{\pfN}{\aligntrait{N}}
-\newcommand{\pfCN}{\aligntrait{CN}}
+\newcommand{\pfLN}{\aligntrait{\traitLNtext}}
+\newcommand{\pfN}{\aligntrait{\traitNNtext}}
+\newcommand{\pfCN}{\aligntrait{\traitCNtext}}
 
-\newcommand{\pfLE}{\aligntrait{LE}}
-\newcommand{\pfNE}{\aligntrait{NE}}
-\newcommand{\pfCE}{\aligntrait{CE}}
+\newcommand{\pfLE}{\aligntrait{\traitLEtext}}
+\newcommand{\pfNE}{\aligntrait{\traitNEtext}}
+\newcommand{\pfCE}{\aligntrait{\traitCEtext}}
 
 % Commonality traits
-\newcommand{\pfUncommon}{\metatrait{traitborder}{uncommonColor}{Uncommon}}
-\newcommand{\pfRare}{\metatrait{traitborder}{rareColor}{Rare}}
-\newcommand{\pfUnique}{\metatrait{traitborder}{uniqueColor}{Unique}}
+\newcommand{\pfUncommon}{\metatrait{traitborder}{uncommonColor}{\traitUncommontext}}
+\newcommand{\pfRare}{\metatrait{traitborder}{rareColor}{\traitRaretext}}
+\newcommand{\pfUnique}{\metatrait{traitborder}{uniqueColor}{\traitUniquetext}}

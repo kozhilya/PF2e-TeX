@@ -22,7 +22,7 @@
   colframe=title1,
   fonttitle=\pfStatBlockTitleFont,
   fontupper=\pfStatBlockBodyFont,
-  title={#2 \hfill Creature #3},
+  title={#2 \hfill \creaturetext~#3},
   before upper={\pfhline{}\\},
   coltitle=creature,
   #1
@@ -46,76 +46,70 @@
 % Macros for use within the monster environment
 %
 \newkeycommand\basics[
-    perception=0, % perception mod, followed by special senses
-    languages={---}, % languages, followed by special communication abilities; no languages means it can't communicate through language
-    skills=+0, % the creature is trained or better with these skills
-    str=+0,
-    dex=+0,
-    con=+0,
-    int=+0,
-    wis=+0,
-    cha=+0,
-    items=, % list any significant gear the creature carries
-    interact=, % special abilities that affect how a creature perceives and interacts with the world
-    ac=10, % followed by special bonuses to AC
-    fort=0, % a special bonus to a specific save appears in parenthesis after the saves bonus
-    ref=0,
-    will=0,
-    hp=1, % followed by automatic abilities that affect the creature's hit points or healing
-    immune=,
-    resist=,
-    weak=,
-    auto=, % the creature's auras, any abilities that automatically affect its defenses, and the like
-    reactions=, % free actions or reactions that are usually triggered when it's not the creature's turn
-    speed={25 feet}, % speeds, starting with base land speed
-    ]{%
+  perception=0, % perception mod, followed by special senses
+  languages={---}, % languages, followed by special communication abilities; no languages means it can't communicate through language
+  skills=+0, % the creature is trained or better with these skills
+  str=+0,
+  dex=+0,
+  con=+0,
+  int=+0,
+  wis=+0,
+  cha=+0,
+  items=, % list any significant gear the creature carries
+  interact=, % special abilities that affect how a creature perceives and interacts with the world
+  ac=10, % followed by special bonuses to AC
+  fort=0, % a special bonus to a specific save appears in parenthesis after the saves bonus
+  ref=0,
+  will=0,
+  hp=1, % followed by automatic abilities that affect the creature's hit points or healing
+  immune=,
+  resist=,
+  weak=,
+  auto=, % the creature's auras, any abilities that automatically affect its defenses, and the like
+  reactions=, % free actions or reactions that are usually triggered when it's not the creature's turn
+  speed={25 feet}, % speeds, starting with base land speed
+]{%
 \begingroup
 \par
 \raggedright
 \noindent
 % \onehalfspacing
-\pf@creatureattr{perception}{\perceptionname}\\
-\pf@creatureattr{languages}{\languagesname}\\
-\pf@creatureattr{skills}{\skillsname}\\
-%
-\textbf{\strstatname}~\commandkey{str}, \nolinebreak
-\textbf{\dexstatname}~\commandkey{dex}, \nolinebreak
-\textbf{\constatname}~\commandkey{con}, \nolinebreak[3]
-\textbf{\intstatname}~\commandkey{int}, \nolinebreak[3]
-\textbf{\wisstatname}~\commandkey{wis}, \nolinebreak[2]
-\textbf{\chastatname}~\commandkey{cha}\\
-%
-\ifcommandkey{items}{%
-\pfdescblock{\itemsname}{\commandkey{items}}\\%
-}{}%
-%
-\ifcommandkey{interact}{%
-\commandkey{interact}\\%
-}{}%
-%
-\pfhline{}%
+\pfdescsimple{\pf@creatureattr{perception}{\perceptionname}}
+\pfdescsimple{\ifcommandkey{languages}{\pf@creatureattr{languages}{\languagesname}}{}}
+\pfdescsimple{\ifcommandkey{skills}{\pf@creatureattr{skills}{\skillsname}}{}}
 
-\pf@creatureattr{ac}{\acname},
-\pf@creatureattr{fort}{\fortitudename},
-\pf@creatureattr{ref}{\reflexname},
-\pf@creatureattr{will}{\willname}\\
+\pfdescsimple{
+  \textbf{\strstatname}~\commandkey{str}, \nolinebreak
+  \textbf{\dexstatname}~\commandkey{dex}, \nolinebreak
+  \textbf{\constatname}~\commandkey{con}, \nolinebreak[3]
+  \textbf{\intstatname}~\commandkey{int}, \nolinebreak[3]
+  \textbf{\wisstatname}~\commandkey{wis}, \nolinebreak[2]
+  \textbf{\chastatname}~\commandkey{cha}
+}
 
-\pf@creatureattr{hp}{\hpname}%
-\pf@ifcreatureattr{immune}{\immname}%
-\pf@ifcreatureattr{weak}{\weakname}%
-\pf@ifcreatureattr{resist}{\resistname}
+\ifcommandkey{items}{\pfdescblock{\itemsname}{\commandkey{items}}}{}%
+\ifcommandkey{interact}{\pfdescsimple{\commandkey{interact}}}{}%
 
-\ifcommandkey{auto}{%
-\commandkey{auto}%
-}{}%
+\pfhline%
 
-\ifcommandkey{reactions}{%
-\commandkey{reactions}%
-}{}%
+\pfdescsimple{
+  \pf@creatureattr{ac}{\acname};
+  \pf@creatureattr{fort}{\fortitudename},
+  \pf@creatureattr{ref}{\reflexname},
+  \pf@creatureattr{will}{\willname}
+}
+\pfdescsimple{
+  \pf@creatureattr{hp}{\hpname}%
+  \pf@ifcreatureattr{immune}{\immname}%
+  \pf@ifcreatureattr{weak}{\weakname}%
+  \pf@ifcreatureattr{resist}{\resistname}
+}
+\ifcommandkey{auto}{\pfdescsimple{\commandkey{auto}}}{}%
+\ifcommandkey{reactions}{\pfdescsimple{\commandkey{reactions}}}{}%
 
-\pfhline{}%
+\pfhline%
 
-\textbf{\speedname} \commandkey{speed}
+\pfdescblock{\speedname}{\commandkey{speed}}
 
 \endgroup
 }

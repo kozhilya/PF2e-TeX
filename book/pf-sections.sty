@@ -62,13 +62,14 @@
 %%%%%%%%%%%%%% \chapter
 
 \def\chapterVspaceBefore{0pt}
+\def\subchapterVspaceBefore{-0.8em}
 
 \patchcmd{\chapter}{\thispagestyle {plain}}{}{}{}
 
 \titleformat{\chapter}
 [block]
 {}
-{\centering\pfChapterSubFont\chaptertitlename\ \thechapter:\\[-0.8em]}
+{\centering\pfChapterSubFont\chaptertitlename\ \thechapter:\\[\subchapterVspaceBefore]}
 {-1em}
 {\centering\pfChapterFont}
 % [{\titleline{\color{undergold}\titlerule[2pt]}}\vspace{-30pt}]

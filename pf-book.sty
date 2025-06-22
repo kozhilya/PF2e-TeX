@@ -110,12 +110,45 @@
 \ExecuteOptionsX{toc=onecolumn}
 \ProcessOptionsX\relax
 
+
+% Set paragraph and line spacing
+%\linespread{1.1}%
+%\setlength{\parindent}{1em}
+\setlength{\parindent}{10pt}
+%\setlength{\RaggedRightRightskip}{0pt plus 1cm}
+%\setlength{\RaggedRightParindent}{\parindent}
+%\hyphenpenalty=1000  % Fewer hyphens
+%
+%% Set left justification if not justified
+%\nottoggle{justified}{\RaggedRight}
+
+%
+% Style Parameters
+%
+
+% Disable space between paragraphs.
+\setlength{\parskip}{0pt}
+
+
 % Stuff every module should be able to use
+\def\@pfdescblockparindent{10pt}
+\newbool{descblockpar}
+% \newboolean{\pf@descblockpar}
+
+\newcommand{\pf@descblock}[1]{%
+  \noindent\hangindent=\@pfdescblockparindent{\sffamily #1}%
+  \ifbool{descblockpar}{\par}{}%
+}
 
 \newcommand{\pfdescblock}[2]{%
-\noindent\hangindent=1ex\textbf{#1}~#2
-% keep the newline
+  \@ifstar{\boolfalse{descblockpar}}{\booltrue{descblockpar}}%
+  \pf@descblock{\textbf{#1} #2}%
 }
+\newcommand{\pfdescsimple}[1]{%
+  \@ifstar{\boolfalse{descblockpar}}{\booltrue{descblockpar}}%
+  \pf@descblock{#1}%
+}
+
 
 % Page geometry
 \iftoggle{side-toc}{%
@@ -171,24 +204,6 @@
 \RequirePackage{book/pf-toc}
 
 
-% Set paragraph and line spacing
-%\linespread{1.1}%
-%\setlength{\parindent}{1em}
-\setlength{\parindent}{10pt}
-%\setlength{\RaggedRightRightskip}{0pt plus 1cm}
-%\setlength{\RaggedRightParindent}{\parindent}
-%\hyphenpenalty=1000  % Fewer hyphens
-%
-%% Set left justification if not justified
-%\nottoggle{justified}{\RaggedRight}
-
-%
-% Style Parameters
-%
-
-% Disable space between paragraphs.
-\setlength{\parskip}{0pt}
-
 % Font environment
 \newenvironment{lmss}{%
   \pf@deprecate{lmss}{0.7}
@@ -205,16 +220,18 @@
 
 
 % Figure out the best values for the pre & post \vspace
-\newcommand{\pfhline}{
-  \vspace{-7pt}\noindent%
-  \begin{tikzpicture}[]
-    \draw (0, 0) -- (0,0) -- (\linewidth, 0.05);
-  \end{tikzpicture}%
-  \vspace{-5pt}%
-  % \leaders\hbox{\rule[0.5em]{1pt}{3pt}}\hfill%
-  % \par%
-}
-
+% \newcommand{\pfhline}{
+%   \vspace{-7pt}\noindent%
+%   \begin{tikzpicture}[]
+%     \draw (0, 0) -- (0,0) -- (\linewidth, 0.05);
+%   \end{tikzpicture}%
+%   \vspace{-5pt}%
+%   % \leaders\hbox{\rule[0.5em]{1pt}{3pt}}\hfill%
+%   % \par%
+% }
+\newlength{\pf@pfglinespace}
+\setlength{\pf@pfglinespace}{3pt}
+\newcommand{\pfhline}{\vspace{0.5\pf@pfglinespace}\hrule\vspace{0.5\pf@pfglinespace}}
 
 % Either hilariously, or infuriatingly, the \ifcommandkey
 % implementation is buggy. Here is a re-implementation
