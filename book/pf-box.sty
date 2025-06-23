@@ -331,20 +331,23 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Common Pathfinder description block
 
+\def\pf@descriptionSpaceBebore{10pt}
+\def\pf@descriptionSpaceAfter{5pt}
+
 \newlength\pfDescriptionParIndentStore
 \newenvironment{pf-description}[2]{%
   \setlength{\pfDescriptionParIndentStore}{\the\parindent}
   \setlength{\parindent}{0pt}
+  \vspace{\pf@descriptionSpaceBebore}
   \begingroup%
-  \bigskip%
   {\pfStatBlockTitleFont{#1 \hfill #2}}
   
   \pfhline
 
   \pfStatBlockBodyFont
 }{%
-  \medskip%
+  \par
   \endgroup
+  \vspace{\pf@descriptionSpaceAfter}
   \setlength{\parindent}{\pfDescriptionParIndentStore}
-  % \vspace{0.3cm}
 }

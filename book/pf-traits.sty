@@ -24,29 +24,33 @@
 %   \end{wrapfigure}%
 % }
 
-\def\pf@traitHeight{1.5em}
+\def\pf@traitHeight{1.4em}
 \def\pf@traitTBrule{0.8pt}
 \def\pf@traitLRrule{2.5pt}
+\def\pf@traitLR{-0.5pt}
 
 \newcommand{\metatrait}[3]{%
   \noindent\setlength\intextsep{0pt}%
-  \begin{tcolorbox}[hbox,
-                    % tcbox raise base,
-                    colframe=#1,
-                    colback=#2,
-                    sharp corners,
-                    valign=center,
-                    halign=center,
-                    left=-0pt,
-                    right=0pt,
-                    height=\pf@traitHeight,
-                    toprule=\pf@traitTBrule,
-                    bottomrule=\pf@traitTBrule,
-                    leftrule=\pf@traitLRrule,
-                    rightrule=\pf@traitLRrule,
-                    enlarge right by=-\pf@traitLRrule,
-                    nobeforeafter,
-                  ]%
+  \begin{tcolorbox}[
+    hbox,
+    % parbox=true,
+    % tcbox raise base,
+    colframe=#1,
+    colback=#2,
+    sharp corners,
+    valign=center,
+    halign=center,
+    baseline=0.0mm,
+    left=\pf@traitLR,
+    right=\pf@traitLR,
+    height=\pf@traitHeight,
+    toprule=\pf@traitTBrule,
+    bottomrule=\pf@traitTBrule,
+    leftrule=\pf@traitLRrule,
+    rightrule=\pf@traitLRrule,
+    enlarge right by=-\pf@traitLRrule,
+    nobeforeafter,
+  ]%
     {\pfTraitFont{#3}}%
   \end{tcolorbox}%
   \ignorespaces%
